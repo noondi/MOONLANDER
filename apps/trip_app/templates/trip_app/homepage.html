@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <!-- styling with bootstrap here!!! -->
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+   <style>
+    table{
+      border-collapse: collapse;
+    }
+    table, tr, td {
+        padding: 5px;
+        border: 1px solid black;
+    }
+  </style>
+    <title></title>    
+  </head>
+  <body>
+    <div style="margin-left:30px; width: 900px; vertical-align: top; display: inline-block;">
+      <a href="{% url 'trip:log_out' %}">Log Out</a>
+      <h1>Hello {{user.name}}</h1>
+  
+      <p><a href="{% url 'trip:add_page' %}">Add Travel Plan</a></p>
+  
+  
+      <h2>Your Trip Schedule</h2>
+      <table>
+  
+        <th>Destination
+          <td>Travel Start Date</td>
+          <td>Travel End Date</td>
+          <td>Plan</td>
+        </th>
+        {% for travel in user_travels %}
+          <tr>
+            <td>{{travel.trip.destination}}</td>
+            <td>{{travel.trip.travel_from}}</td>
+            <td>{{travel.trip.travel_to}}</td>
+            <td>{{travel.trip.description}}</td>
+  
+          </tr>
+          {% endfor %}
+        </table>
+        <br>
+        <br>
+        <br>
+  
+        <h2>Other Users Travel Plans</h2>
+          <table>
+  
+            <th>Name
+              <td>Destination</td>
+              <td>Travel Start Date</td>
+              <td>Travel End Date</td>
+              <td>Plan</td>
+              <td>Do you want to join?</td>
+            </th>
+            {% for travel in travels %}
+            {% if not user in travel.trip.user_trip %}
+  
+              <tr>
+                <td>{{travel.user.name}}</td>
+                <td><a href="{% url 'trip:view_trip' trip_id=travel.trip.id %}">{{travel.trip.destination}}</a></td>
+                <td>{{travel.trip.travel_from}}</td>
+                <td>{{travel.trip.travel_to}}</td>
+                <td>{{travel.trip.description}}</td>
+  
+                <td><a href="{% url 'trip:join_trip' trip_id=travel.trip.id %}">Join</a></td>
+              </tr>
+              {% endif %}
+            {% endfor %}
+            </table>
+    </div>
+
+  </body>
+</html>
